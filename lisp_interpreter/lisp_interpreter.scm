@@ -1,6 +1,13 @@
 
 #lang scheme
 
+
+;Built in functions used
+; * number? 
+; * string?
+; * symbol?  example: (symbol? 'abc) returns #t
+
+
 ; if an expression is a number or a string
 ; it is self-evaluating
 (define (self-evaluating? exp)
@@ -8,20 +15,42 @@
           ((string? exp) #t)
           (else #f)))
 
+(define (variable? exp)
+    (symbol? exp)
+)
+
+; the 2nd member of exp
+(define (text-of-quotation exp) (cadr exp))
 
 
 
 ; test type check, judge is a function that checks if the exp is some type(s)
-(define (assert title judge exp)
-    (cond ( (equal? (judge exp) #t) (string-append title " " "Pass") )
+(define (assert title judge exp value)
+    (cond ( (equal? (judge exp) value) (string-append title " " "Pass") )
           (else (string-append title " " "Fail"))
     )
 )
 
-(assert "test 1" self-evaluating? 23)
-(assert "test 2" self-evaluating? 55)
-(assert "test 3" self-evaluating? 5.5)
-(assert "test 4" self-evaluating? "Brown University")
-(assert "test 5" self-evaluating? "Computer Science")
+; test of self-evaluating?
+(assert "test 1" self-evaluating? 23 #t)
+(assert "test 2" self-evaluating? 55 #t)
+(assert "test 3" self-evaluating? 5.5 #t)
+(assert "test 4" self-evaluating? "Brown University" #t)
+(assert "test 5" self-evaluating? "Computer Science" #t)
+
+; test of variable?
+(assert "test 6" variable? 'alfred #t)
+(assert "test 7" variable? 'dfsa #t)
+(assert "test 8" variable? 23.7 #f)
+(assert "test 9" variable? 100 #f)
+
+(assert "test 10" text-of-quotation '(1 2 3 4) 2)
+(assert "test 11" text-of-quotation (list "a" "b" "c" "d") "b")
+(assert "test 12" text-of-quotation (list 'a 'b 'c 'd) 'b)
+
+
+
+
+
 
 
