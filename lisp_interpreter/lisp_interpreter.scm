@@ -20,7 +20,10 @@
 )
 
 ; the 2nd member of exp
-(define (text-of-quotation exp) (cadr exp))
+(define get-second-member cadr)
+
+; don't know what this means yet
+(define (text-of-quotation exp) (get-second-member exp))
 
 
 
