@@ -33,9 +33,9 @@
 )
 
 
-;(define quoted? exp)
-	
-;)
+(define (quoted? exp)
+	(tagged-list? exp 'quote)	
+)
 
 
 
@@ -49,6 +49,13 @@
 )
 
 
+(define (assert-value title input expected)
+	(if (equal? input expected)
+		(string-append title " " "Pass")
+		(string-append title " " "Fail")
+		
+	)
+)
 
 
 
@@ -70,20 +77,35 @@
 (assert "test 11" text-of-quotation (list "a" "b" "c" "d") "b")
 (assert "test 12" text-of-quotation (list 'a 'b 'c 'd) 'b)
 
-"test 13, expecting #t"
-(tagged-list? '(func a b c d) 'func)
+(assert-value 
+	"test 13"
+	(tagged-list? '(func a b c d) 'func)
+	#t
+)
 
-"test 14, expecting #t"
-(tagged-list? '(c a b c) 'func)
+(assert-value 
+	"test 14"
+	(tagged-list? '(c a b c) 'func)
+	#f
+)
 
+(assert-value 
+	"test 15"
+	(tagged-list? 12 'func)
+	#f
+)
 
+(assert-value 
+	"test 16"
+	(quoted? 'sabc)
+	#f
+)
 
-"test 15, expecting #t"
-(tagged-list? 12 'func)
-
-
-
-
+(assert-value 
+	"test 17"
+	(quoted? '(quote a bc d))
+	#t
+)
 
 
 
