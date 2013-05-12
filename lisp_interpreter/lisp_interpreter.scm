@@ -24,7 +24,23 @@
 (define (text-of-quotation exp) (get-second-member exp))
 
 
+; checking if the exp is something like (func a b c ...)
+(define (tagged-list? exp tag)
+	(if (pair? exp) ; pair works for cons, list, quoted expression
+		(eq? (car exp) tag)
+	    #f 
+	)
+)
 
+
+;(define quoted? exp)
+	
+;)
+
+
+
+
+;-------------------------------------------------------------
 ; test type check, judge is a function that checks if the exp is some type(s)
 (define (assert title judge exp value)
     (cond ( (equal? (judge exp) value) (string-append title " " "Pass") )
@@ -32,10 +48,8 @@
     )
 )
 
-;(define (tagged-list? exp tag)
-;	(if (pair? exp)
-;	)
-;)
+
+
 
 
 
@@ -55,6 +69,19 @@
 (assert "test 10" text-of-quotation '(1 2 3 4) 2)
 (assert "test 11" text-of-quotation (list "a" "b" "c" "d") "b")
 (assert "test 12" text-of-quotation (list 'a 'b 'c 'd) 'b)
+
+"test 13, expecting #t"
+(tagged-list? '(func a b c d) 'func)
+
+"test 14, expecting #t"
+(tagged-list? '(c a b c) 'func)
+
+
+
+"test 15, expecting #t"
+(tagged-list? 12 'func)
+
+
 
 
 
