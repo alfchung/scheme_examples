@@ -15,9 +15,7 @@
           ((string? exp) #t)
           (else #f)))
 
-(define (variable? exp)
-    (symbol? exp)
-)
+(define variable? symbol?)
 
 ; the 2nd member of exp
 (define get-second-member cadr)
@@ -33,6 +31,13 @@
           (else (string-append title " " "Fail"))
     )
 )
+
+;(define (tagged-list? exp tag)
+;	(if (pair? exp)
+;	)
+;)
+
+
 
 ; test of self-evaluating?
 (assert "test 1" self-evaluating? 23 #t)
