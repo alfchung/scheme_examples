@@ -1,5 +1,5 @@
 
-#lang scheme
+;#lang scheme
 
 
 ;Built in functions used
@@ -19,6 +19,13 @@
 
 ; the 2nd member of exp
 (define get-second-member cadr)
+
+(define get-third-member caddr)
+
+
+(define get-first-of-second-member caadr)
+
+
 
 ; don't know what this means yet
 (define (text-of-quotation exp) (get-second-member exp))
@@ -43,90 +50,43 @@
 )
 
 
-;-------------------------------------------------------------
-; test type check, judge is a function that checks if the exp is some type(s)
-(define (assert title judge exp value)
-    (cond ( (equal? (judge exp) value) (string-append title " " "Pass") )
-          (else (string-append title " " "Fail"))
-    )
+(define (assignment-variable exp)
+	(get-second-member exp)
 )
 
 
-(define (assert-value title input expected)
-	(if (equal? input expected)
-		(string-append title " " "Pass")
-		(string-append title " " "Fail")
-		
+(define (assignment-value exp)
+	(get-third-member exp)
+)
+
+
+(define (definition? exp)
+	(tagged-list? exp 'define)
+)
+
+
+(define (definition-variable exp)
+	(define second (get-second-member exp))
+	(if (symbol? second)
+		second   			 ;for something like (define a 123)
+		(get-first-of-second-member exp) ;for something like (define (func x) body)
 	)
 )
 
 
-
-
-; test of self-evaluating?
-(assert "test 1" self-evaluating? 23 #t)
-(assert "test 2" self-evaluating? 55 #t)
-(assert "test 3" self-evaluating? 5.5 #t)
-(assert "test 4" self-evaluating? "Brown University" #t)
-(assert "test 5" self-evaluating? "Computer Science" #t)
-
-; test of variable?
-(assert "test 6" variable? 'alfred #t)
-(assert "test 7" variable? 'dfsa #t)
-(assert "test 8" variable? 23.7 #f)
-(assert "test 9" variable? 100 #f)
-
-(assert "test 10" text-of-quotation '(1 2 3 4) 2)
-(assert "test 11" text-of-quotation (list "a" "b" "c" "d") "b")
-(assert "test 12" text-of-quotation (list 'a 'b 'c 'd) 'b)
-
-(assert-value 
-	"test 13"
-	(tagged-list? '(func a b c d) 'func)
-	#t
-)
-
-(assert-value 
-	"test 14"
-	(tagged-list? '(c a b c) 'func)
-	#f
-)
-
-(assert-value 
-	"test 15"
-	(tagged-list? 12 'func)
-	#f
-)
-
-(assert-value 
-	"test 16"
-	(quoted? 'sabc)
-	#f
-)
-
-(assert-value 
-	"test 17"
-	(quoted? '(quote a bc d))
-	#t
-)
-
-(assert-value
-	"test 18"
-	(assignment? '(set! a 3))
-	#t
+(define (make-lambda parameters body)
+	(cons 'lambda (cons parameters body))
 )
 
 
-(assert-value
-	"test 19"
-	(assignment? '(set! abc jkl))
-	#t
+(define (definition-value exp)
+	(define second (get-second-member exp))
+	(if (symbol? second)
+		(get-third-member exp) ; (define a 123)
+		; (define (func x) (+ 1 2))
+		; get the parameter and body
+		(make-lambda (cdr (get-second-member exp)) (get-third-member exp))
+	)
 )
 
-
-(assert-value
-	"test 20"
-	(assignment? '(+ 2 3))
-	#f
-)
 
