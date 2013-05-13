@@ -38,6 +38,9 @@
 )
 
 
+(define (assignment? exp)
+	(tagged-list? exp 'set!)
+)
 
 
 ;-------------------------------------------------------------
@@ -107,7 +110,23 @@
 	#t
 )
 
+(assert-value
+	"test 18"
+	(assignment? '(set! a 3))
+	#t
+)
 
 
+(assert-value
+	"test 19"
+	(assignment? '(set! abc jkl))
+	#t
+)
 
+
+(assert-value
+	"test 20"
+	(assignment? '(+ 2 3))
+	#f
+)
 
