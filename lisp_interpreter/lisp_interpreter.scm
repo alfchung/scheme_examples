@@ -45,6 +45,7 @@
 )
 
 
+;assignment
 (define (assignment? exp)
 	(tagged-list? exp 'set!)
 )
@@ -60,6 +61,7 @@
 )
 
 
+; definition
 (define (definition? exp)
 	(tagged-list? exp 'define)
 )
@@ -74,19 +76,39 @@
 )
 
 
+;(define (make-lambda parameters body)
+;	(cons 'lambda (cons parameters body))
+;)
+
+
+;(define (definition-value exp)
+;	(define second (get-second-member exp))
+;	(if (symbol? second)
+;		(get-third-member exp) ; (define a 123)
+;		; (define (func x) (+ 1 2))
+		; get the parameter and body
+		;(make-lambda (cdr (get-second-member exp)) (get-third-member exp))
+;		(make-lambda (cdadr exp) (cddr exp))
+;	)
+;)
+
+(define (definition-value exp)
+	(if (symbol? (cadr exp))    ; second element
+		(caddr exp)         ; third element
+	  	(make-lambda 
+			(cdadr exp) ; formal parameters (define (func x y z) (+ x y z))  : (x y z)
+	   		(cddr exp)  ; body:  third list
+		)              
+	)
+) 
+
 (define (make-lambda parameters body)
 	(cons 'lambda (cons parameters body))
 )
+	   
 
 
-(define (definition-value exp)
-	(define second (get-second-member exp))
-	(if (symbol? second)
-		(get-third-member exp) ; (define a 123)
-		; (define (func x) (+ 1 2))
-		; get the parameter and body
-		(make-lambda (cdr (get-second-member exp)) (get-third-member exp))
-	)
-)
+
+
 
 

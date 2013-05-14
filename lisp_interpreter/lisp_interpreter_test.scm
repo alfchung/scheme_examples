@@ -109,11 +109,23 @@
 	'func
 )
 
-(definition-value '(define a 123))
 
-(definition-value '(define (double x) (+ x x)))
+(assert-value
+	"test 23"
+	(definition-value '(define a 123))
+	123
+)
 
-( (definition-value '(define (double x) (+ x x))) 10)
+
+(assert-value
+	"test 24"
+	(definition-value '(define (double x) (+ x x)))
+	'(lambda(x) (+ x x))
+)
+
+; this work at command line but not REPL, don't know why yet
+; would come back later
+; (  (eval  (definition-value '(define (double x) (+ x x))) ) 10)
 
 
 
