@@ -61,6 +61,27 @@
 )
 
 
+
+; Lambda
+(define (lambda? exp)
+	(tagged-list? exp 'lambda)
+)
+
+(define (lambda-parameters exp)
+	(cadr exp) ;second
+)
+
+(define (lambda-body exp)
+	(cddr exp) ;list starts from the third
+)
+
+(define (make-lambda parameters body)
+	(cons 'lambda (cons parameters body))
+)
+
+
+
+
 ; definition
 (define (definition? exp)
 	(tagged-list? exp 'define)
@@ -102,13 +123,6 @@
 	)
 ) 
 
-(define (make-lambda parameters body)
-	(cons 'lambda (cons parameters body))
-)
 	   
-
-
-
-
 
 
