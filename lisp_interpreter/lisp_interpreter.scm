@@ -138,3 +138,23 @@
 )
 
 
+
+;begin statement
+(define (begin? exp)
+	(tagged-list? exp 'begin)
+)
+
+(define (begin-actions exp) (cdr exp))
+
+(define (last-exp? seq) 
+	(null? (cdr seq)) 
+)
+
+(define (first-exp seq) (car seq))
+
+(define (rest-exp seq) (cdr seq))
+
+
+
+
+
