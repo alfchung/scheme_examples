@@ -2,6 +2,7 @@
 ;#lang scheme
 
 
+
 ;Built in functions used
 ; * number? 
 ; * string?
@@ -102,16 +103,16 @@
 ;)
 
 
-;(define (definition-value exp)
-;	(define second (get-second-member exp))
-;	(if (symbol? second)
-;		(get-third-member exp) ; (define a 123)
-;		; (define (func x) (+ 1 2))
+(define (definition-value exp)
+	(define second (get-second-member exp))
+	(if (symbol? second)
+		(get-third-member exp) ; (define a 123)
+		; (define (func x) (+ 1 2))
 		; get the parameter and body
 		;(make-lambda (cdr (get-second-member exp)) (get-third-member exp))
-;		(make-lambda (cdadr exp) (cddr exp))
-;	)
-;)
+		(make-lambda (cdadr exp) (cddr exp))
+	)
+)
 
 (define (definition-value exp)
 	(if (symbol? (cadr exp))    ; second element
@@ -124,5 +125,16 @@
 ) 
 
 	   
+; if statement
+(define (if? exp)
+	(tagged-list? exp 'if)
+)
 
+(define (if-predicate exp)
+	(get-second-member exp)
+)
+
+(define (if-consequent exp)
+	(get-third-member exp)
+)
 

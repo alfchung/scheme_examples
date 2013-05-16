@@ -2,6 +2,8 @@
 
 #lang scheme
 
+
+(define ns (make-base-namespace))
 (include "lisp_interpreter.scm")
 
 
@@ -123,9 +125,10 @@
 	'(lambda(x) (+ x x))
 )
 
-; this work at command line but not REPL, don't know why yet
-; would come back later
-; (  (eval  (definition-value '(define (double x) (+ x x))) ) 10)
-
-
-
+; here definition-value returns a reference to a function
+; eval dereferences it and then apply to parameter 10
+(assert-value
+	"test 25"
+	((eval  (definition-value '(define (double x) (+ x x))) ns) 10)   
+	20
+)
