@@ -154,7 +154,20 @@
 
 (define (rest-exp seq) (cdr seq))
 
+(define (make-begin seq) (cons 'begin seq))
+
+; make-begin takes a list(seq) with more than one member, a single expression, a null
+(define (sequence->exp seq)
+	(cond ( (null? seq)      seq              )
+	      ( (last-exp? seq)  (first-exp seq)    )
+	      ( else             (make-begin seq) )
+	)
+)
+; the return for null and 1 element is strange!!
+; like (3) () ...
+; these not legal expression
 
 
 
+;(load "lisp_interpreter.scm")
 
