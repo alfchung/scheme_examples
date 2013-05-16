@@ -132,3 +132,68 @@
 	((eval  (definition-value '(define (double x) (+ x x))) ns) 10)   
 	20
 )
+
+; |=============================|
+; |  test if statement related  |
+; |=============================|
+(define if_stat1 '(if (and (or (> a b) (< c d)) (> e f))  (+ abc efg) (- abc efg)   ))
+(define if_stat2 '(if (and (or (> a b) (< c d)) (> e f))  (+ abc efg)    ))
+(define if_stat3 '(if IamTrue  (+ abc efg)    ))
+(define def_stat1 '(define abc 123))
+
+(assert-value
+	"test 26 - if?"
+	(if? if_stat1)
+	#t
+)
+
+
+(assert-value
+	"test 27 - if?"
+	(if? if_stat2)
+	#t
+)
+
+
+(assert-value
+	"test 28 - if?"
+	(if? def_stat1)
+	#f
+)
+
+(assert-value
+	"test 29 - if-predicate"
+	(if-predicate if_stat1)
+	'(and (or (> a b) (< c d)) (> e f)) 
+)
+
+
+(assert-value
+	"test 30 - if-predicate"
+	(if-predicate if_stat3)
+	'IamTrue
+)
+
+(assert-value
+	"test 31 - if-consequent"
+	(if-consequent if_stat1)
+	'(+ abc efg)
+)
+
+(assert-value
+	"test 32 - if-alternative"
+	(if-alternative if_stat1)
+	'(- abc efg)
+)
+
+(assert-value
+	"test 33 - if-alternative"
+	(if-alternative if_stat2)
+	'false
+)
+
+(assert-value
+	"test 34 - if-alternative"
+	(if-alternative if_stat3)
+	'false
+)

@@ -23,6 +23,7 @@
 
 (define get-third-member caddr)
 
+(define get-forth-member cadddr)
 
 (define get-first-of-second-member caadr)
 
@@ -103,23 +104,27 @@
 ;)
 
 
-(define (definition-value exp)
-	(define second (get-second-member exp))
-	(if (symbol? second)
-		(get-third-member exp) ; (define a 123)
-		; (define (func x) (+ 1 2))
-		; get the parameter and body
-		;(make-lambda (cdr (get-second-member exp)) (get-third-member exp))
-		(make-lambda (cdadr exp) (cddr exp))
-	)
-)
+;(define (definition-value exp)
+;	(define second (get-second-member exp))
+;	(if (symbol? second)
+;		(get-third-member exp) ; (define a 123)
+;		; (define (func x) (+ 1 2))
+;		; get the parameter and body
+;		;(make-lambda (cdr (get-second-member exp)) (get-third-member exp))
+;		(make-lambda (cdadr exp) (cddr exp))
+;	)
+;)
 
 (define (definition-value exp)
-	(if (symbol? (cadr exp))    ; second element
-		(caddr exp)         ; third element
+	(define second (get-second-member exp))
+	(define body (cddr exp))
+
+	(if (symbol? second)    ; second element
+		body
 	  	(make-lambda 
-			(cdadr exp) ; formal parameters (define (func x y z) (+ x y z))  : (x y z)
-	   		(cddr exp)  ; body:  third list
+			(cdr second) ; formal parameters (define (func x y z) (+ x y z))  : (x y z)
+				     ; get rid of function name here
+	   		body  ; body:  list starts from the third
 		)              
 	)
 ) 
@@ -137,4 +142,13 @@
 (define (if-consequent exp)
 	(get-third-member exp)
 )
+
+(define (if-alternative exp)
+	(define alternative (cdddr exp)) ;list starts from the forth element
+	(if (not (null? alternative))
+		alternative
+		'false
+	)
+)
+
 
