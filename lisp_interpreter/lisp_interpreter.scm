@@ -82,8 +82,6 @@
 )
 
 
-
-
 ; definition
 (define (definition? exp)
 	(tagged-list? exp 'define)
@@ -97,23 +95,6 @@
 		(get-first-of-second-member exp) ;for something like (define (func x) body)
 	)
 )
-
-
-;(define (make-lambda parameters body)
-;	(cons 'lambda (cons parameters body))
-;)
-
-
-;(define (definition-value exp)
-;	(define second (get-second-member exp))
-;	(if (symbol? second)
-;		(get-third-member exp) ; (define a 123)
-;		; (define (func x) (+ 1 2))
-;		; get the parameter and body
-;		;(make-lambda (cdr (get-second-member exp)) (get-third-member exp))
-;		(make-lambda (cdadr exp) (cddr exp))
-;	)
-;)
 
 (define (definition-value exp)
 	(define second (get-second-member exp))
@@ -149,6 +130,11 @@
 		alternative
 		'false
 	)
+)
+
+
+(define (make-if predicate consequent alternative)
+	(list 'if predicate consequent alternative)
 )
 
 
